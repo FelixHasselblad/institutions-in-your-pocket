@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -19,7 +20,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
 import {
   ArrowRight,
   Database,
@@ -81,7 +81,10 @@ const PROJECT = {
 };
 
 const CONTACT = {
-  primaryEmail: "contact@institutionsinyourpocket.org",
+  emails: [
+    "felix.hasselblad@iies.su.se",
+    "matteo.pianella@iies.su.se",
+  ],
   affiliation: "Stockholm University / IIES",
   location: "Stockholm, Sweden",
   links: {
@@ -114,6 +117,7 @@ const SECTIONS = {
       "AI as a complement to institutions, not a substitute for courts or legal professionals.",
       "Focus on early-stage dispute navigation and procedural understanding.",
       "Partnerships with local legal-aid organizations to reach users far from formal law.",
+      "The AI tool is developed by a third-party partner; our role centers on research, evaluation, and safeguards.",
       "Evaluation centered on access, resolution pathways, and institutional engagement.",
     ],
   },
@@ -284,37 +288,18 @@ export default function InstitutionsInYourPocketSite() {
     { label: "Contact", href: "#contact" },
   ];
 
-  const mailto = useMemo(() => {
-    const subject = encodeURIComponent(
-      `Collaboration inquiry: ${PROJECT.name}`
-    );
-    const body = encodeURIComponent(
-      [
-        "Hi,",
-        "",
-        "I’m interested in collaborating on Institutions in Your Pocket.",
-        "",
-        "Context:",
-        "- Organization / team:",
-        "- Country / region:",
-        "- Use case / workflow:",
-        "- Data constraints (if any):",
-        "- Timeline:",
-        "",
-        "Best,",
-        "",
-      ].join("\n")
-    );
-    return `mailto:${CONTACT.primaryEmail}?subject=${subject}&body=${body}`;
-  }, []);
-
   return (
     <div className={cn("min-h-screen bg-background text-foreground")}>
       <div className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
             <div className="rounded-2xl border bg-background p-2 shadow-sm">
-              <Sparkles className="h-5 w-5" />
+              <Image
+                src="/stockholm-university-logo.svg"
+                alt="Stockholm University logo"
+                width={20}
+                height={20}
+              />
             </div>
             <div className="leading-tight">
               <div className="text-sm font-semibold">{PROJECT.name}</div>
@@ -337,7 +322,7 @@ export default function InstitutionsInYourPocketSite() {
           </div>
           <div className="flex items-center gap-2">
             <Button className="rounded-2xl" asChild>
-              <a href={mailto}>
+              <a href="#contact">
                 <Mail className="mr-2 h-4 w-4" />
                 Contact
               </a>
@@ -651,7 +636,7 @@ export default function InstitutionsInYourPocketSite() {
                         </ul>
                         <div className="mt-4">
                           <Button className="w-full rounded-2xl" asChild>
-                            <a href={mailto}>
+                            <a href="#contact">
                               Start a conversation{" "}
                               <ArrowRight className="ml-2 h-4 w-4" />
                             </a>
@@ -822,23 +807,21 @@ export default function InstitutionsInYourPocketSite() {
           <SectionHeader
             icon={Mail}
             title="Contact"
-            subtitle="Send a structured inquiry to speed up evaluation and implementation planning."
+            subtitle="Reach us directly for collaboration or research inquiries."
           />
           <div className="mt-6 grid gap-4 md:grid-cols-12">
             <Card className="rounded-2xl shadow-sm md:col-span-5">
               <CardHeader>
-                <CardTitle className="text-base">Direct</CardTitle>
-                <CardDescription>
-                  Best for agencies, NGOs, and research groups.
-                </CardDescription>
+                <CardTitle className="text-base">Email contacts</CardTitle>
+                <CardDescription>Best for agencies, NGOs, and research groups.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="rounded-2xl border p-3">
-                  <div className="text-xs text-muted-foreground">Email</div>
-                  <div className="mt-1 text-sm font-medium">
-                    {CONTACT.primaryEmail}
+                {CONTACT.emails.map((email) => (
+                  <div key={email} className="rounded-2xl border p-3">
+                    <div className="text-xs text-muted-foreground">Email</div>
+                    <div className="mt-1 text-sm font-medium">{email}</div>
                   </div>
-                </div>
+                ))}
                 <div className="rounded-2xl border p-3">
                   <div className="text-xs text-muted-foreground">Links</div>
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -864,66 +847,27 @@ export default function InstitutionsInYourPocketSite() {
                     </Button>
                   </div>
                 </div>
-                <Button className="w-full rounded-2xl" asChild>
-                  <a href={mailto}>
-                    Email with template <ArrowRight className="ml-2 h-4 w-4" />
-                  </a>
-                </Button>
               </CardContent>
             </Card>
             <Card className="rounded-2xl shadow-sm md:col-span-7">
               <CardHeader>
-                <CardTitle className="text-base">Inquiry form</CardTitle>
+                <CardTitle className="text-base">Coordination note</CardTitle>
                 <CardDescription>
-                  This is a front-end stub; wire it to your backend or a form
-                  provider.
+                  The AI tool is developed by a third-party partner; our team focuses on
+                  research design, evaluation, and governance.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    window.location.href = mailto;
-                  }}
-                  className="grid gap-3"
-                >
-                  <div className="grid gap-3 md:grid-cols-2">
-                    <div className="grid gap-2">
-                      <label className="text-sm font-medium">Name</label>
-                      <Input placeholder="Your name" className="rounded-2xl" />
-                    </div>
-                    <div className="grid gap-2">
-                      <label className="text-sm font-medium">Organization</label>
-                      <Input
-                        placeholder="Agency / NGO / University"
-                        className="rounded-2xl"
-                      />
-                    </div>
+                <div className="grid gap-3 text-sm text-muted-foreground">
+                  <div className="rounded-2xl border p-3">
+                    We support partner scoping, workflow mapping, and evaluation
+                    design while ensuring deployment governance and measurement.
                   </div>
-                  <div className="grid gap-2">
-                    <label className="text-sm font-medium">Use case</label>
-                    <Input
-                      placeholder="e.g., case handling, legal aid intake, procurement support"
-                      className="rounded-2xl"
-                    />
+                  <div className="rounded-2xl border p-3">
+                    For sensitive contexts, data sharing and access are governed by
+                    partner agreements and local protocols.
                   </div>
-                  <div className="grid gap-2">
-                    <label className="text-sm font-medium">Message</label>
-                    <Textarea
-                      placeholder="What workflow do you want to improve, and what outcomes matter most?"
-                      className="min-h-[120px] rounded-2xl"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                    <div className="text-xs text-muted-foreground">
-                      Submitting opens an email draft (mailto). Replace with a
-                      real endpoint for production.
-                    </div>
-                    <Button type="submit" className="rounded-2xl">
-                      Send <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </form>
+                </div>
               </CardContent>
             </Card>
           </div>
