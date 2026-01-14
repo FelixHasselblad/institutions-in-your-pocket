@@ -295,7 +295,7 @@ export default function InstitutionsInYourPocketSite() {
           <div className="flex items-center gap-2">
             <div className="rounded-2xl border bg-background p-2 shadow-sm">
               <Image
-                src="/stockholm-university-logo.svg"
+                src="/stockholm-university-logo.png"
                 alt="Stockholm University logo"
                 width={20}
                 height={20}
